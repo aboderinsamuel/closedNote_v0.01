@@ -148,7 +148,7 @@ Built by [**Samuel Aboderin**](https://github.com/aboderinsamuel) —
 Computer Engineering student at **UNILAG 🇳🇬**,
 who just got tired of losing his prompts (and decided to fix it for everyone else too).
 
-Reach me on [X (Twitter)](https://x.com/aboderinsamuel) or [LinkedIn](https://linkedin.com/in/aboderinsamuel).
+Reach me on [LinkedIn](https://www.linkedin.com/in/samuelaboderin).
 
 ---
 
