@@ -1,0 +1,30 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply font-sans bg-neutral-50 dark:bg-neutral-950 text-neutral-900 dark:text-neutral-100;
+  }
+  
+  .font-serif-title {
+    font-family: Georgia, 'Times New Roman', serif;
+  }
+}
+
+@layer components {
+  .sparkle {
+    position: absolute;
+    width: 2px;
+    height: 2px;
+    background: white;
+    border-radius: 50%;
+    opacity: 0.3;
+    animation: twinkle 3s infinite;
+  }
+  
+  @keyframes twinkle {
+    0%, 100% { opacity: 0.2; }
+    50% { opacity: 0.6; }
+  }
+}
