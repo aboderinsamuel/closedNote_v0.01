@@ -134,9 +134,9 @@ If you've got ideas, dark mode, AI tag suggestions, team sharing, prompt history
 
 #### 📚 Contributing Resources
 
-- **[Code of Conduct](./CODE_OF_CONDUCT.md)** - Our community standards
-- **[Roadmap](./ROADMAP.md)** - Future features and project vision
-- **[Release Strategy](./RELEASES.md)** - How we ship updates
+- **[Code of Conduct](./docs/CODE_OF_CONDUCT.md)** - Our community standards
+- **[Roadmap](./docs/ROADMAP.md)** - Future features and project vision
+- **[Release Strategy](./docs/RELEASES.md)** - How we ship updates
 - **[Issue Templates](./.github/ISSUE_TEMPLATE/)** - Report bugs or request features
 - **[Pull Request Template](./.github/PULL_REQUEST_TEMPLATE.md)** - Submit your changes
 
