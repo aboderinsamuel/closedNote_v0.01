@@ -1,222 +1,156 @@
 # Release Strategy
 
-## 🚀 Versioning
-
-closedNote follows [Semantic Versioning](https://semver.org/) (SemVer):
-
-**MAJOR.MINOR.PATCH** (e.g., `1.2.3`)
-
-- **MAJOR** version: Breaking changes that require user action
-- **MINOR** version: New features (backward compatible)
-- **PATCH** version: Bug fixes and minor improvements (backward compatible)
+> How we ship updates to closedNote, keeping things simple and reliable.
 
 ---
 
-## 📅 Release Cycle
+## 🏷️ Version Numbers
 
-### Regular Releases
-- **Patch releases**: As needed (bug fixes, security updates)
-- **Minor releases**: Every 4-6 weeks (new features)
-- **Major releases**: Annually or when breaking changes are necessary
+We use **MAJOR.MINOR.PATCH** format (like `1.2.3`):
 
-### Pre-releases
-- **Alpha** (`v1.0.0-alpha.1`): Internal testing, unstable
-- **Beta** (`v1.0.0-beta.1`): Public testing, mostly stable
-- **RC** (`v1.0.0-rc.1`): Release candidate, stable and feature-complete
+- **MAJOR** (1.x.x): Big changes that might break things
+- **MINOR** (x.2.x): New features that work with existing stuff
+- **PATCH** (x.x.3): Bug fixes and small improvements
+
+**Current version**: v0.01 (still early, expect changes!)
 
 ---
 
-## 🏷️ Release Process
+## 📅 When We Release
 
-### 1. Planning
-- Feature freeze 1 week before release
-- Review roadmap and prioritize issues
-- Create a release milestone on GitHub
+- **Bug fixes**: Whenever needed (could be daily!)
+- **New features**: Every few weeks when ready
+- **Big updates**: When we hit major milestones
 
-### 2. Development
-- All changes go through pull requests
-- Code review required for all PRs
-- Automated tests must pass
-- Update documentation
-
-### 3. Testing
-- Manual testing on desktop and mobile
-- Cross-browser testing (Chrome, Firefox, Safari, Edge)
-- Test on different screen sizes
-- Security audit for major releases
-
-### 4. Release
-1. Update version in `package.json`
-2. Update `CHANGELOG.md` with all changes
-3. Create a git tag: `git tag -a v1.0.0 -m "Release v1.0.0"`
-4. Push tag: `git push origin v1.0.0`
-5. Create GitHub Release with release notes
-6. Deploy to production (Vercel auto-deploys)
-7. Announce on social media and community channels
-
-### 5. Post-Release
-- Monitor for critical bugs
-- Respond to user feedback
-- Plan hotfixes if needed
+No strict schedule, we ship when it's ready and tested. 🚀
 
 ---
 
-## 📝 Changelog
+## 🚀 How We Ship Updates
 
-Every release includes a `CHANGELOG.md` update with:
+1. **Someone spots a bug or suggests a feature** → GitHub issue
+2. **We (or a contributor) fix/build it** → Pull request
+3. **Quick review and testing** → Make sure it works
+4. **Merge to main** → Vercel auto-deploys to production
+5. **Tag the release** → Create a version (e.g., v0.2.0)
+6. **Update CHANGELOG.md** → Document what changed
+7. **Announce it** → LinkedIn, X (Twitter), GitHub releases
 
-- **Added**: New features
-- **Changed**: Changes to existing functionality
-- **Deprecated**: Features that will be removed
-- **Removed**: Features that were removed
-- **Fixed**: Bug fixes
-- **Security**: Security updates
+Simple as that. No complicated pipelines or enterprise processes.
+
+---
+
+## 📝 What Goes in Each Release
+
+Every release note includes:
+
+- ✨ **New features** - What you can now do
+- 🐛 **Bug fixes** - What we fixed
+- 🔄 **Changes** - What works differently
+- 🗑️ **Removed** - What's gone (rarely happens)
 
 Example:
 ```markdown
-## [1.2.0] - 2025-01-15
+## v0.2.0 - December 2025
 
-### Added
-- Global search palette (Ctrl/Cmd+K)
-- Mobile drawer navigation
-- Documentation page
+✨ New
+- Export prompts to JSON
+- Offline mode (work without internet)
 
-### Fixed
-- Settings page SSR error
-- Mobile header overflow
+🐛 Fixed
+- Search not working on mobile
+- Dark mode button hiding on small screens
 ```
 
 ---
 
-## 🔄 Deployment Strategy
+## 🚨 Emergency Fixes
 
-### Production (main branch)
-- Auto-deployed to Vercel on every merge to `main`
-- Requires passing CI/CD checks
-- Protected branch (no force pushes)
+If something breaks badly in production:
 
-### Staging (develop branch)
-- Auto-deployed to staging environment
-- Used for testing before production merge
-- Can be unstable
+1. Create a hotfix branch
+2. Fix it fast
+3. Test quickly
+4. Deploy immediately
+5. Let everyone know
 
-### Development
-- Feature branches for all changes
-- Format: `feature/feature-name`, `fix/bug-name`
-- Merged to `develop` first, then to `main`
-
----
-
-## 🚨 Hotfix Process
-
-For critical bugs in production:
-
-1. Create branch from `main`: `hotfix/critical-bug`
-2. Fix the issue
-3. Test thoroughly
-4. Merge directly to `main` and `develop`
-5. Create patch release immediately
-6. Deploy and monitor
+We'll patch critical bugs within hours, not days.
 
 ---
 
 ## 🎯 Release Checklist
 
-Before every release:
+Before shipping:
 
-- [ ] All tests passing
-- [ ] Documentation updated
-- [ ] CHANGELOG.md updated
-- [ ] Version bumped in package.json
-- [ ] Breaking changes documented
-- [ ] Migration guide (if needed)
+- [ ] Works on desktop and mobile
+- [ ] Tested in Chrome, Firefox, Safari
+- [ ] No console errors
+- [ ] Dark mode looks good
+- [ ] README updated if needed
+- [ ] CHANGELOG updated
 - [ ] Screenshots updated (for UI changes)
-- [ ] Security review (for major releases)
-- [ ] Performance benchmarks
-- [ ] Mobile and desktop tested
-- [ ] Release notes drafted
 
 ---
 
-## 🔐 Security Releases
+## 🔐 Security Updates
 
-Security vulnerabilities are handled with urgency:
+Found a security issue? Email **samuelaboderin@gmail.com** privately.
 
-1. **Report**: Email samuelaboderin@gmail.com
-2. **Assess**: Evaluate severity and impact
-3. **Fix**: Develop and test patch privately
-4. **Release**: Deploy as emergency patch
-5. **Announce**: Notify users after patch is live
-6. **Post-mortem**: Document lessons learned
+We'll:
+1. Fix it quietly
+2. Deploy the patch
+3. Announce it after it's live
+4. Credit you (if you want)
 
 ---
 
-## 📢 Release Announcements
-
-Every release is announced on:
+## 📢 Where We Announce Releases
 
 - GitHub Releases page
-- LinkedIn (@samuelaboderin)
-- X (Twitter) (@aboderinsamuel)
-- README.md (version badge)
+- LinkedIn: [@samuelaboderin](https://www.linkedin.com/in/samuelaboderin)
+- X: [@aboderinsamuel](https://x.com/aboderinsamuel)
 
-Major releases get:
-- Blog post (if blog exists)
-- Product Hunt launch (for v1.0)
+Big milestones (like v1.0) might get:
+- Product Hunt launch
+- Blog post
 - Email to contributors
 
 ---
 
-## 🎉 Major Milestones
+## 🎉 Upcoming Milestones
 
-### v0.1 (Current)
-- ✅ Basic CRUD operations
-- ✅ Search and filter
-- ✅ Mobile responsive
-- ✅ Dark mode
+### v0.2 (Next)
+- Export/import prompts
+- Offline support
+- Better mobile navigation
 
-### v1.0 (Target: Q2 2025)
-- Offline-first support
-- Export/import
-- Prompt versioning
-- Rich text editor
-- Production-ready
+### v1.0 (When ready)
+- Super stable and tested
+- All core features polished
+- Ready for everyone to use daily
 
-### v2.0 (Target: Q4 2025)
-- Team collaboration
-- Public prompt gallery
+### v2.0 (Future)
+- Team features
 - Browser extension
 - Mobile apps
 
----
-
-## 🤝 Contributing to Releases
-
-Contributors can help by:
-
-- Testing pre-releases (beta/RC)
-- Reporting bugs early
-- Improving documentation
-- Translating release notes
-- Sharing feedback
+See [ROADMAP.md](./ROADMAP.md) for the full plan.
 
 ---
 
-## 📊 Release Metrics
+## 🤝 How You Can Help
 
-We track:
-- Time between releases
-- Number of issues closed
-- Community contributions
-- User feedback sentiment
-- Performance improvements
+- Test pre-releases and report bugs
+- Share feedback on new features
+- Help with documentation
+- Spread the word!
 
 ---
 
 **Current Version**: v0.1  
-**Last Release**: November 2025  
-**Next Release**: TBD
+**Last Updated**: November 2025  
+**Built by a student, for everyone** 🇳🇬
 
 ---
 
-Questions about releases? Open an issue or contact [@aboderinsamuel](https://github.com/aboderinsamuel).
+Questions? Open an issue or DM [@aboderinsamuel](https://github.com/aboderinsamuel).
