@@ -6,7 +6,7 @@
 
 ### 👋 What is closedNote?
 
-closedNote is a simple web app for **saving, organizing, and re-using your best prompts** — built for *students, teachers, engineers, prompt engineers, prompt tutors, and even regular folks like my mum 😅.*
+closedNote is a simple web app for **saving, organizing, and re-using your best prompts**, built for *students, teachers, engineers, prompt engineers, prompt tutors, and even regular folks like my mum 😅.*
 
 It's the one place you can finally dump all your fire prompts without digging through old chats or screenshots.
 A calm home for all your creativity.
@@ -23,7 +23,7 @@ Then my classmates.
 Meanwhile, prompt engineers were dropping crazy tips on X (Twitter) and Stack Overflow, but I had nowhere to store them neatly.
 
 So, I built one.
-That's what **closedNote** is all about — a small home to make **prompt saving easier for everyone**. 🙂🙂
+That's what **closedNote** is all about, a small home to make **prompt saving easier for everyone**. 🙂🙂
 
 Completely open source, open to contributions, and continuously improving.
 
@@ -50,7 +50,7 @@ Completely open source, open to contributions, and continuously improving.
 
 ![Desktop Screenshot 3](./screenshots/desktop3.png)
 
-> clean, minimal, and distraction-free — because prompts deserve peace too 😌
+> clean, minimal, and distraction-free, because prompts deserve peace too 😌
 
 ---
 
@@ -60,13 +60,13 @@ Completely open source, open to contributions, and continuously improving.
 | ------------------------------------------------- | ------------------------------------------------- |
 | ![Mobile Screenshot 1](./screenshots/mobile1.png) | ![Mobile Screenshot 2](./screenshots/mobile2.png) |
 
-> fully responsive — works smoothly on mobile for on-the-go creativity
+> fully responsive, works smoothly on mobile for on-the-go creativity
 
 ---
 
 ### 🗄️ Database Setup (Supabase + PostgreSQL)
 
-closedNote runs on **Supabase**, which provides both authentication and secure cloud storage using **Row Level Security (RLS)** — meaning no one can see your notes but you.
+closedNote runs on **Supabase**, which provides both authentication and secure cloud storage using **Row Level Security (RLS)**, meaning no one can see your notes but you.
 
 #### 🧾 Example Schema Snippets
 
@@ -80,12 +80,12 @@ closedNote runs on **Supabase**, which provides both authentication and secure c
 
 ### 🧠 Features
 
-* 🏠 **Local + Cloud Storage** — works offline, syncs later
-* 🔍 **Search & Filter** — find prompts in seconds
-* 🏷️ **Tag System** — group prompts by category or mood
-* 💾 **One-Click Copy** — paste straight into ChatGPT, Claude, Cursor, etc.
-* 🔒 **Private by Default** — RLS ensures your data stays yours
-* 🌍 **Open Source Forever** — fork it, remix it, teach with it
+* 🏠 **Local + Cloud Storage**, works offline, syncs later
+* 🔍 **Search & Filter**, find prompts in seconds
+* 🏷️ **Tag System**, group prompts by category or mood
+* 💾 **One-Click Copy**, paste straight into ChatGPT, Claude, Cursor, etc.
+* 🔒 **Private by Default**, RLS ensures your data stays yours
+* 🌍 **Open Source Forever**, fork it, remix it, teach with it
 
 ---
 
@@ -130,7 +130,7 @@ closedNote is **developer-friendly**:
 closedNote is **completely open source** and **open for amendments**.
 The goal is to make prompt saving easier for *everyone*, not just developers.
 
-If you've got ideas — dark mode, AI tag suggestions, team sharing, prompt history, whatever — you're welcome to hop in!
+If you've got ideas, dark mode, AI tag suggestions, team sharing, prompt history, whatever, you're welcome to hop in!
 
 ```bash
 # Steps to contribute
@@ -144,7 +144,7 @@ If you've got ideas — dark mode, AI tag suggestions, team sharing, prompt hist
 
 ### 👨🏽‍🎓 About the Developer
 
-Built by [**Samuel Aboderin**](https://github.com/aboderinsamuel) —
+Built by [**Samuel Aboderin**](https://github.com/aboderinsamuel),
 Computer Engineering student at **UNILAG 🇳🇬**,
 who just got tired of losing his prompts (and decided to fix it for everyone else too).
 
@@ -154,9 +154,9 @@ Reach me on [LinkedIn](https://www.linkedin.com/in/samuelaboderin).
 
 ### 🧾 License
 
-MIT License — use it, remix it, or improve it.
+MIT License, use it, remix it, or improve it.
 Just don't lock it behind a paywall. 🙏🏽
 
 ---
 
-**closedNote** — *because your prompts deserve better than browser history.* ✨
+**closedNote**, *because your prompts deserve better than browser history.* ✨
