@@ -154,9 +154,31 @@ export async function getSession() {
  
 export async function logoutUser(): Promise<void> {
   try {
-    await supabase.auth.signOut();
+    console.log("[auth] Logging out user...");
+    
+    // Sign out from Supabase with scope 'local' to clear session
+    const { error } = await supabase.auth.signOut({ scope: 'local' });
+    
+    if (error) {
+      console.error("[auth] Logout error:", error);
+      // Continue even if there's an error
+    }
+    
+    // Manually clear localStorage keys as backup
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem('closednote-auth');
+      // Also clear any Supabase default keys
+      Object.keys(localStorage).forEach(key => {
+        if (key.startsWith('sb-') || key.includes('supabase')) {
+          localStorage.removeItem(key);
+        }
+      });
+    }
+    
+    console.log("[auth] Logout successful");
   } catch (err) {
     console.error("[auth] Logout error:", err);
+    // Don't throw - we still want to clear local state
   }
 }
 
@@ -201,6 +223,14 @@ export function onAuthStateChange(
   const {
     data: { subscription },
   } = supabase.auth.onAuthStateChange(async (event, session) => {
+    console.log("[auth] Auth state change event:", event, "Session exists:", !!session);
+    
+    if (event === 'SIGNED_OUT') {
+      console.log("[auth] User signed out");
+      callback(null);
+      return;
+    }
+    
     if (session?.user) {
       const user = await getCurrentUser();
       callback(user);

@@ -104,6 +104,29 @@ Then visit 👉 **[http://localhost:3000](http://localhost:3000)**
 
 ---
 
+### 🚀 Deploy to Production
+
+#### Quick Deploy with Vercel (Recommended)
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/aboderinsamuel/closedNote)
+
+**Important Steps:**
+1. Click the button above or go to [Vercel](https://vercel.com)
+2. Import your forked repository
+3. Add environment variables:
+   - `NEXT_PUBLIC_SUPABASE_URL`
+   - `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+4. Deploy!
+
+**After Deployment:**
+- Go to your Supabase Dashboard → Authentication → URL Configuration
+- Add your Vercel domain to **Redirect URLs**: `https://your-app.vercel.app/**`
+- Update **Site URL** to: `https://your-app.vercel.app`
+
+📖 **Detailed deployment guide:** See [VERCEL_DEPLOYMENT.md](./VERCEL_DEPLOYMENT.md)
+
+---
+
 ### 🧰 Developer Notes
 
 closedNote is **developer-friendly**:

@@ -25,6 +25,7 @@ export const supabase = createClient(
       autoRefreshToken: true,
       detectSessionInUrl: true,
       storage: typeof window !== 'undefined' ? window.localStorage : undefined,
+      storageKey: 'closednote-auth',
     },
     global: {
       headers: {
