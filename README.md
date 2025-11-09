@@ -1,7 +1,5 @@
 # 🗒️ closedNote
 
-[![CI](https://github.com/aboderinsamuel/closedNote/actions/workflows/ci.yml/badge.svg)](https://github.com/aboderinsamuel/closedNote/actions/workflows/ci.yml)
-
 > *"Because even ChatGPT forgets sometimes…"*
 
 ---
