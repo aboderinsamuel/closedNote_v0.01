@@ -68,7 +68,7 @@ export function Header({ promptCount, showMobileMenu = true }: HeaderProps) {
             </button>
           )}
 
-          <Link href="/" className="flex items-center gap-3 group">
+          <Link href="/home" className="flex items-center gap-3 group">
             <span className="font-serif-title text-2xl font-bold text-neutral-900 dark:text-neutral-100 group-hover:opacity-80 transition-opacity">
               closedNote
             </span>
