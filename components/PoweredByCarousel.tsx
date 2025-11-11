@@ -24,16 +24,13 @@ type Logo = {
 };
 
 const logos: Logo[] = [
-  {
-    name: "Hugging Face",
+    {
+    name: "Tesseract.js",
     element: (
-      <Image
-        src="https://huggingface.co/front/assets/huggingface_logo-noborder.svg"
-        alt="Hugging Face"
-        width={40}
-        height={40}
-        className="h-10 w-10"
-      />
+      <svg viewBox="0 0 128 128" fill="none" className="h-10 w-10">
+        <circle cx="64" cy="64" r="60" stroke="#4B5563" strokeWidth="8" />
+        <path d="M88 46 60 74l-16-16-8 8 24 24 36-36-8-8Z" fill="#10B981" />
+      </svg>
     ),
   },
   {
@@ -49,6 +46,7 @@ const logos: Logo[] = [
         width={40}
         height={40}
         className="h-10 w-10 dark:invert"
+        unoptimized
       />
     ),
   },
@@ -61,6 +59,7 @@ const logos: Logo[] = [
         width={40}
         height={40}
         className="h-10 w-10"
+        unoptimized
       />
     ),
   },
@@ -73,6 +72,20 @@ const logos: Logo[] = [
         width={40}
         height={40}
         className="h-10 w-10"
+        unoptimized
+      />
+    ),
+  },
+    {
+    name: "Hugging Face",
+    element: (
+      <Image
+        src="https://huggingface.co/front/assets/huggingface_logo-noborder.svg"
+        alt="Hugging Face"
+        width={40}
+        height={40}
+        className="h-10 w-10"
+        unoptimized
       />
     ),
   },
@@ -85,6 +98,7 @@ const logos: Logo[] = [
         width={40}
         height={40}
         className="h-10 w-10"
+        unoptimized
       />
     ),
   },
@@ -97,6 +111,7 @@ const logos: Logo[] = [
         width={40}
         height={40}
         className="h-10 w-10"
+        unoptimized
       />
     ),
   },
@@ -109,16 +124,8 @@ const logos: Logo[] = [
         width={40}
         height={40}
         className="h-10 w-10 dark:invert"
+        unoptimized
       />
-    ),
-  },
-  {
-    name: "Tesseract.js",
-    element: (
-      <svg viewBox="0 0 128 128" fill="none" className="h-10 w-10">
-        <circle cx="64" cy="64" r="60" stroke="#4B5563" strokeWidth="8" />
-        <path d="M88 46 60 74l-16-16-8 8 24 24 36-36-8-8Z" fill="#10B981" />
-      </svg>
     ),
   },
 ];

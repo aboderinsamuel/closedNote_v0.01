@@ -28,12 +28,14 @@ export default function SignupPage() {
       const res = await signup(email, password, displayName);
       if (!res.ok) {
         // Check if it's an "already exists" error and redirect to login
-        if (res.error.toLowerCase().includes('already registered') || 
-            res.error.toLowerCase().includes('already been registered') ||
-            res.error.toLowerCase().includes('already exists')) {
+        if (
+          res.error.toLowerCase().includes("already registered") ||
+          res.error.toLowerCase().includes("already been registered") ||
+          res.error.toLowerCase().includes("already exists")
+        ) {
           setError(res.error + " Redirecting to login...");
           setTimeout(() => {
-            router.push('/login');
+            router.push("/login");
           }, 2000);
         } else {
           setError(res.error);

@@ -3,6 +3,12 @@ import { NextResponse } from "next/server";
 // Default lightweight instruct model (community hosted)
 const DEFAULT_CHAT_MODEL = "HuggingFaceH4/zephyr-7b-beta";
 
+const noCacheHeaders = {
+  'Cache-Control': 'no-store, no-cache, must-revalidate, max-age=0',
+  'Pragma': 'no-cache',
+  'Expires': '0',
+};
+
 interface ChatBody {
   prompt?: string; // raw prompt text (extracted OCR or user edited)
   instruction?: string; // optional refinement instructions
@@ -15,7 +21,10 @@ export async function POST(req: Request) {
   try {
     const contentType = req.headers.get("content-type") || "";
     if (!contentType.includes("application/json")) {
-      return NextResponse.json({ error: "Expected application/json body" }, { status: 400 });
+      return NextResponse.json({ error: "Expected application/json body" }, { 
+        status: 400,
+        headers: noCacheHeaders,
+      });
     }
 
     const body = (await req.json()) as ChatBody;
@@ -28,14 +37,20 @@ export async function POST(req: Request) {
     } = body;
 
     if (!prompt.trim()) {
-      return NextResponse.json({ error: "Empty 'prompt' field" }, { status: 400 });
+      return NextResponse.json({ error: "Empty 'prompt' field" }, { 
+        status: 400,
+        headers: noCacheHeaders,
+      });
     }
 
     const token = process.env.HUGGINGFACE_API_KEY || "";
     if (!token) {
       return NextResponse.json(
         { error: "Chat service is currently unavailable. The server administrator needs to configure HUGGINGFACE_API_KEY." },
-        { status: 503 }
+        { 
+          status: 503,
+          headers: noCacheHeaders,
+        }
       );
     }
 
@@ -63,7 +78,10 @@ export async function POST(req: Request) {
       // Model loading
       return NextResponse.json(
         { error: "Model is loading. Please retry in a moment." },
-        { status: 503 }
+        { 
+          status: 503,
+          headers: noCacheHeaders,
+        }
       );
     }
 
@@ -71,7 +89,10 @@ export async function POST(req: Request) {
       const text = await res.text();
       return NextResponse.json(
         { error: `Chat model request failed (${res.status}): ${text}` },
-        { status: 500 }
+        { 
+          status: 500,
+          headers: noCacheHeaders,
+        }
       );
     }
 
@@ -87,10 +108,15 @@ export async function POST(req: Request) {
     }
     answer = String(answer || "").trim();
 
-    return NextResponse.json({ model, answer });
+    return NextResponse.json({ model, answer }, {
+      headers: noCacheHeaders,
+    });
   } catch (err) {
     console.error("/api/chat error:", err);
     const message = err instanceof Error ? err.message : "Unknown error";
-    return NextResponse.json({ error: message }, { status: 500 });
+    return NextResponse.json({ error: message }, {
+      status: 500,
+      headers: noCacheHeaders,
+    });
   }
 }

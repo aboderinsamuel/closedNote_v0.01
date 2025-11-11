@@ -22,7 +22,9 @@ export const supabase = createClient(
   supabaseAnonKey || "placeholder-key",
   {
     auth: {
-      persistSession: false, // Don't cache sessions - forces fresh auth check
+      persistSession: true, // Keep sessions but only in sessionStorage (clears on browser close)
+      storage: typeof window !== 'undefined' ? window.sessionStorage : undefined, // Use sessionStorage instead of localStorage
+      storageKey: 'closednote-auth',
       autoRefreshToken: true,
       detectSessionInUrl: true,
       flowType: 'pkce',
@@ -30,6 +32,8 @@ export const supabase = createClient(
     global: {
       headers: {
         'x-client-info': 'closednote@0.1.0',
+        'Cache-Control': 'no-cache, no-store, must-revalidate',
+        'Pragma': 'no-cache',
       },
     },
     db: {

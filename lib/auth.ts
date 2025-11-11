@@ -170,16 +170,34 @@ export async function logoutUser(): Promise<void> {
   try {
     console.log("[auth] Logging out user...");
     
-    // Simple logout - no cache management needed since persistSession = false
+    // Sign out from Supabase
     const { error } = await supabase.auth.signOut();
 
     if (error) {
       console.error("[auth] Logout error:", error);
     }
     
+    // Clear all session storage (including auth tokens)
+    if (typeof window !== 'undefined') {
+      try {
+        window.sessionStorage.clear();
+        console.log("[auth] Session storage cleared");
+      } catch (e) {
+        console.warn("[auth] Could not clear session storage:", e);
+      }
+    }
+    
     console.log("[auth] Logout successful");
   } catch (err) {
     console.error("[auth] Logout error:", err);
+    // Even if logout fails, clear session storage
+    if (typeof window !== 'undefined') {
+      try {
+        window.sessionStorage.clear();
+      } catch (e) {
+        console.warn("[auth] Could not clear session storage:", e);
+      }
+    }
   }
 }
 

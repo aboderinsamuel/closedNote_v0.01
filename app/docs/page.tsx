@@ -3,6 +3,10 @@ import Image from "next/image";
 import { Header } from "@/components/Header";
 import { Layout } from "@/components/Layout";
 
+// Prevent caching
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 export const metadata = {
   title: "Documentation | closedNote",
   description: "Project overview, architecture, and demo for closedNote.",

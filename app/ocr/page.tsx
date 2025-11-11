@@ -47,7 +47,11 @@ export default function OCRPage() {
       const formData = new FormData();
       formData.append("file", imageFile);
       formData.append("mode", mode);
-      const res = await fetch("/api/ocr", { method: "POST", body: formData });
+      const res = await fetch("/api/ocr", {
+        method: "POST",
+        body: formData,
+        cache: "no-store",
+      });
       const data = await res.json();
       if (!res.ok) {
         throw new Error(data.error || "OCR failed");
@@ -87,6 +91,7 @@ export default function OCRPage() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ prompt: extractedText, model: selectedModel }),
+        cache: "no-store",
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Chat refinement failed");
