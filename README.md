@@ -16,7 +16,7 @@
 [![License: MIT](https://img.shields.io/badge/license-MIT-green?style=flat-square)](LICENSE)
 [![Deployed on Vercel](https://img.shields.io/badge/deployed-Vercel-black?style=flat-square&logo=vercel)](https://vercel.com)
 
-**📊 Project Scope: 13 API Routes · 17 React Components · 25 Passing Tests**
+**📊 Project Scope: 3 API Routes · 17 React Components · 25 Passing Tests**
 
 ---
 
