@@ -21,6 +21,7 @@ export async function getAllPrompts(): Promise<Prompt[]> {
       content: p.content,
       model: p.model as PromptModel,
       collection: p.collection,
+      isPublic: p.is_public ?? false,
       createdAt: p.created_at,
       updatedAt: p.updated_at,
     }));
@@ -49,6 +50,7 @@ export async function getPromptById(id: string): Promise<Prompt | undefined> {
       content: prompt.content,
       model: prompt.model as PromptModel,
       collection: prompt.collection,
+      isPublic: prompt.is_public ?? false,
       createdAt: prompt.created_at,
       updatedAt: prompt.updated_at,
     };
@@ -56,6 +58,16 @@ export async function getPromptById(id: string): Promise<Prompt | undefined> {
     console.error("[promptData] Error fetching prompt:", err);
     return undefined;
   }
+}
+
+// Publish or unpublish a prompt for public share links. RLS ensures only the
+// owner can flip this; anonymous readers can only SELECT rows where it is true.
+export async function setPromptVisibility(id: string, isPublic: boolean): Promise<void> {
+  const { error } = await supabase
+    .from("prompts")
+    .update({ is_public: isPublic })
+    .eq("id", id);
+  if (error) throw error;
 }
 
 export async function savePrompt(prompt: Prompt, skipVersion = false): Promise<void> {

@@ -41,6 +41,7 @@ export interface Database {
           content: string
           model: string
           collection: string
+          is_public: boolean
           created_at: string
           updated_at: string
         }
@@ -51,6 +52,7 @@ export interface Database {
           content: string
           model: string
           collection: string
+          is_public?: boolean
           created_at?: string
           updated_at?: string
         }
@@ -61,6 +63,7 @@ export interface Database {
           content?: string
           model?: string
           collection?: string
+          is_public?: boolean
           created_at?: string
           updated_at?: string
         }
