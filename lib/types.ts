@@ -6,8 +6,17 @@ export interface Prompt {
   content: string
   model: PromptModel
   collection: string
+  isPublic?: boolean
   createdAt: string
   updatedAt: string
+}
+
+export interface RunResult {
+  output: string
+  model: string
+  promptTokens: number | null
+  completionTokens: number | null
+  latencyMs: number
 }
 
 export interface User {

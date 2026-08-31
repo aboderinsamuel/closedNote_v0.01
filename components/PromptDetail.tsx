@@ -4,10 +4,11 @@ import React from "react";
 import Link from "next/link";
 import { useState, useRef, useEffect, useCallback } from "react";
 import { Prompt, PromptVersion } from "@/lib/types";
-import { deletePrompt, savePrompt } from "@/lib/promptData";
+import { deletePrompt, savePrompt, setPromptVisibility } from "@/lib/promptData";
 import { useRouter } from "next/navigation";
 import { usePrompts } from "@/lib/hooks/usePrompts";
 import { VersionHistory } from "@/components/VersionHistory";
+import { RunCompare } from "@/components/RunCompare";
 
 interface PromptDetailProps {
   prompt: Prompt;
@@ -36,6 +37,11 @@ export function PromptDetail({ prompt }: PromptDetailProps) {
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [showHistory, setShowHistory] = useState(false);
+  const [showCompare, setShowCompare] = useState(false);
+  const [showShare, setShowShare] = useState(false);
+  const [isPublic, setIsPublic] = useState(!!prompt.isPublic);
+  const [shareBusy, setShareBusy] = useState(false);
+  const [copiedLink, setCopiedLink] = useState(false);
   const [historyKey, setHistoryKey] = useState(0);
   const router = useRouter();
   const { removeOptimistic, updateOptimistic } = usePrompts();
@@ -138,6 +144,30 @@ export function PromptDetail({ prompt }: PromptDetailProps) {
     }
   };
 
+  const publicUrl =
+    typeof window !== "undefined" ? `${window.location.origin}/p/${localPrompt.id}` : "";
+
+  const handleToggleShare = async () => {
+    const next = !isPublic;
+    setShareBusy(true);
+    setError(null);
+    try {
+      await setPromptVisibility(localPrompt.id, next);
+      setIsPublic(next);
+    } catch (err) {
+      setError("Failed to update sharing. Please try again.");
+      console.error("Error updating sharing:", err);
+    } finally {
+      setShareBusy(false);
+    }
+  };
+
+  const handleCopyLink = async () => {
+    await navigator.clipboard.writeText(publicUrl);
+    setCopiedLink(true);
+    setTimeout(() => setCopiedLink(false), 2000);
+  };
+
   function relativeDate(iso: string): string {
     const diff = Date.now() - new Date(iso).getTime();
     const mins = Math.floor(diff / 60000);
@@ -156,6 +186,12 @@ export function PromptDetail({ prompt }: PromptDetailProps) {
     padding: "3px 10px",
     background: "var(--cn-bg-s2)", border: "1px solid var(--cn-border-s)",
     color: "var(--cn-muted)", fontSize: 11, fontWeight: 600, borderRadius: 6,
+  };
+
+  const footerBtnStyle: React.CSSProperties = {
+    display: "inline-flex", alignItems: "center", gap: 6, fontSize: 13,
+    color: "var(--cn-muted)", background: "none", border: "none",
+    cursor: "pointer", transition: "color 0.15s", padding: 0,
   };
 
   return (
@@ -362,17 +398,41 @@ export function PromptDetail({ prompt }: PromptDetailProps) {
         {/* Footer */}
         {!editing && (
           <div style={{ borderTop: "1px solid var(--cn-border-s)", background: "var(--cn-bg-s1)", padding: "12px 28px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-            <button
-              onClick={() => setShowHistory((v) => !v)}
-              style={{ display: "inline-flex", alignItems: "center", gap: 6, fontSize: 13, color: "var(--cn-muted)", background: "none", border: "none", cursor: "pointer", transition: "color 0.15s" }}
-              onMouseEnter={e => (e.currentTarget.style.color = "var(--cn-text2)")}
-              onMouseLeave={e => (e.currentTarget.style.color = "var(--cn-muted)")}
-            >
-              <svg style={{ width: 13, height: 13 }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-              {showHistory ? "Hide history" : "Version history"}
-            </button>
+            <div style={{ display: "flex", alignItems: "center", gap: 18, flexWrap: "wrap" }}>
+              <button
+                onClick={() => setShowHistory((v) => !v)}
+                style={footerBtnStyle}
+                onMouseEnter={e => (e.currentTarget.style.color = "var(--cn-text2)")}
+                onMouseLeave={e => (e.currentTarget.style.color = "var(--cn-muted)")}
+              >
+                <svg style={{ width: 13, height: 13 }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                {showHistory ? "Hide history" : "Version history"}
+              </button>
+              <button
+                onClick={() => setShowCompare((v) => !v)}
+                style={footerBtnStyle}
+                onMouseEnter={e => (e.currentTarget.style.color = "var(--cn-text2)")}
+                onMouseLeave={e => (e.currentTarget.style.color = "var(--cn-muted)")}
+              >
+                <svg style={{ width: 13, height: 13 }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
+                </svg>
+                {showCompare ? "Hide compare" : "Test & compare"}
+              </button>
+              <button
+                onClick={() => setShowShare((v) => !v)}
+                style={{ ...footerBtnStyle, color: isPublic ? "var(--cn-accent)" : "var(--cn-muted)" }}
+                onMouseEnter={e => (e.currentTarget.style.color = "var(--cn-text2)")}
+                onMouseLeave={e => (e.currentTarget.style.color = isPublic ? "var(--cn-accent)" : "var(--cn-muted)")}
+              >
+                <svg style={{ width: 13, height: 13 }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+                </svg>
+                {isPublic ? "Shared · link" : "Share"}
+              </button>
+            </div>
             <button
               onClick={handleDelete}
               style={{ fontSize: 13, color: "#ef4444", background: "none", border: "none", cursor: "pointer", transition: "opacity 0.15s" }}
@@ -399,6 +459,87 @@ export function PromptDetail({ prompt }: PromptDetailProps) {
               currentTitle={localPrompt.title}
               onRestore={handleRestore}
             />
+          </div>
+        </div>
+      )}
+
+      {/* Run & compare panel */}
+      {showCompare && (
+        <div style={{ background: "var(--cn-bg-card)", border: "1px solid var(--cn-border)", borderRadius: 16, boxShadow: "0 4px 16px rgba(0,0,0,0.06)", overflow: "hidden" }}>
+          <div style={{ padding: "20px 28px" }}>
+            <h2 style={{ fontSize: 13, fontWeight: 700, color: "var(--cn-text2)", marginBottom: 4 }}>
+              Run &amp; compare
+            </h2>
+            <p style={{ fontSize: 12, color: "var(--cn-muted)", marginBottom: 16 }}>
+              Run two versions on the same input and see which output wins.
+            </p>
+            <RunCompare
+              promptId={localPrompt.id}
+              currentTitle={localPrompt.title}
+              currentContent={localPrompt.content}
+              defaultModel={localPrompt.model}
+            />
+          </div>
+        </div>
+      )}
+
+      {/* Share panel */}
+      {showShare && (
+        <div style={{ background: "var(--cn-bg-card)", border: "1px solid var(--cn-border)", borderRadius: 16, boxShadow: "0 4px 16px rgba(0,0,0,0.06)", overflow: "hidden" }}>
+          <div style={{ padding: "20px 28px", display: "flex", flexDirection: "column", gap: 14 }}>
+            <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 16 }}>
+              <div>
+                <h2 style={{ fontSize: 13, fontWeight: 700, color: "var(--cn-text2)", marginBottom: 4 }}>
+                  Share
+                </h2>
+                <p style={{ fontSize: 12, color: "var(--cn-muted)", maxWidth: 400, lineHeight: 1.6 }}>
+                  {isPublic
+                    ? "Anyone with the link can view this prompt, read-only. Your other prompts stay private."
+                    : "Publish this prompt to a read-only public page you can share with anyone."}
+                </p>
+              </div>
+              <button
+                onClick={handleToggleShare}
+                disabled={shareBusy}
+                style={{
+                  padding: "6px 16px", fontSize: 12, fontWeight: 600,
+                  background: isPublic ? "var(--cn-bg-s2)" : "var(--cn-btn-bg)",
+                  color: isPublic ? "var(--cn-text2)" : "var(--cn-btn-tx)",
+                  border: isPublic ? "1px solid var(--cn-border)" : "none",
+                  borderRadius: 8, cursor: shareBusy ? "default" : "pointer",
+                  opacity: shareBusy ? 0.6 : 1, whiteSpace: "nowrap", flexShrink: 0,
+                }}
+              >
+                {shareBusy ? "Saving…" : isPublic ? "Unpublish" : "Publish"}
+              </button>
+            </div>
+
+            {isPublic && (
+              <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                <input
+                  readOnly
+                  value={publicUrl}
+                  onFocus={(e) => e.currentTarget.select()}
+                  style={{
+                    flex: 1, minWidth: 0, padding: "8px 12px", fontSize: 13,
+                    background: "var(--cn-bg-s1)", color: "var(--cn-text2)",
+                    border: "1px solid var(--cn-border)", borderRadius: 8, outline: "none",
+                  }}
+                />
+                <button
+                  onClick={handleCopyLink}
+                  style={{
+                    padding: "8px 14px", fontSize: 12, fontWeight: 600,
+                    background: copiedLink ? "rgba(123,216,143,0.12)" : "var(--cn-bg-s2)",
+                    color: copiedLink ? "#7BD88F" : "var(--cn-text2)",
+                    border: `1px solid ${copiedLink ? "rgba(123,216,143,0.3)" : "var(--cn-border)"}`,
+                    borderRadius: 8, cursor: "pointer", whiteSpace: "nowrap", flexShrink: 0,
+                  }}
+                >
+                  {copiedLink ? "Copied!" : "Copy link"}
+                </button>
+              </div>
+            )}
           </div>
         </div>
       )}

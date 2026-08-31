@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
-import OpenAI from "openai";
 import { getUserFromRequest } from "@/lib/supabase-server";
+import { callOpenAI, callHuggingFace } from "@/lib/llm";
 
 const noCacheHeaders = {
   'Cache-Control': 'no-store, no-cache, must-revalidate, max-age=0',
@@ -16,62 +16,6 @@ interface ChatBody {
   temperature?: number;
   userApiKey?: string;
   userHfKey?: string;
-}
-
-async function callHuggingFaceUser(
-  hfKey: string,
-  instruction: string,
-  prompt: string,
-  max_tokens: number,
-): Promise<string> {
-  const res = await fetch(
-    "https://router.huggingface.co/v1/chat/completions",
-    {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${hfKey}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        model: "HuggingFaceH4/zephyr-7b-beta",
-        messages: [
-          { role: "system", content: instruction },
-          { role: "user", content: prompt },
-        ],
-        max_tokens: Math.min(max_tokens, 1500),
-      }),
-    }
-  );
-
-  if (!res.ok) {
-    const err = await res.json().catch(() => ({})) as { error?: { message?: string } };
-    throw new Error(err.error?.message || `HuggingFace error ${res.status}`);
-  }
-
-  const data = await res.json() as { choices?: { message?: { content?: string } }[] };
-  return data.choices?.[0]?.message?.content?.trim() || "";
-}
-
-
-async function callOpenAI(
-  apiKey: string,
-  instruction: string,
-  prompt: string,
-  model: string,
-  max_tokens: number,
-  temperature: number
-): Promise<string> {
-  const openai = new OpenAI({ apiKey });
-  const completion = await openai.chat.completions.create({
-    model,
-    messages: [
-      { role: "system", content: instruction },
-      { role: "user", content: prompt },
-    ],
-    max_tokens: Math.min(max_tokens, 2000),
-    temperature,
-  });
-  return completion.choices[0]?.message?.content?.trim() || "";
 }
 
 export async function POST(req: Request) {
@@ -114,10 +58,12 @@ export async function POST(req: Request) {
     let providerModel: string;
 
     if (userApiKey.trim()) {
-      answer = await callOpenAI(userApiKey.trim(), instruction, prompt, model, max_tokens, temperature);
+      const res = await callOpenAI(userApiKey.trim(), instruction, prompt, model, max_tokens, temperature);
+      answer = res.text;
       providerModel = model;
     } else if (userHfKey.trim()) {
-      answer = await callHuggingFaceUser(userHfKey.trim(), instruction, prompt, max_tokens);
+      const res = await callHuggingFace(userHfKey.trim(), instruction, prompt, max_tokens);
+      answer = res.text;
       providerModel = "zephyr-7b-beta";
     } else {
       return NextResponse.json(
